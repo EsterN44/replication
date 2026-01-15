@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Survey</title>
+
+  <script>
+    // Check if cookie exists
+    function hasSubmitted() {
+      return document.cookie.includes("survey_done=true");
+    }
+
+    // Set cookie after submission
+    function markSubmitted() {
+      document.cookie = "survey_done=true; path=/; max-age=31536000"; // 1 year
+    }
+
+    // Detect form submission by URL change inside iframe
+    window.onload = function() {
+      if (hasSubmitted()) {
+        document.getElementById("form-container").style.display = "none";
+        document.getElementById("done-message").style.display = "block";
+      }
+    };
+
+    // Listen for Google Form submission message (optional fallback)
+    window.addEventListener("message", function(event) {
+      if (event.data === "submitted") {
+        markSubmitted();
+      }
+    });
+  </script>
+
+</head>
+
+<body>
+
+  <div id="form-container">
+    <!-- Your Google Form embed -->
+    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeU5lcEycEv8SXQ_qmW4CPlS3_CnK4VR6uK5cem9L2xNOgS2Q/viewform?embedded=true" width="640" height="3856" frameborder="0" marginheight="0" marginwidth="0">Načítava sa…</iframe>
+  </div>
+
+  <div id="done-message" style="display:none;">
+    <h2>Ďakujeme za účasť</h2>
+    <p>Tento dotazník ste už vyplnili.</p>
+  </div>
+
+</body>
+</html>
